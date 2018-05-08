@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
-
-from src.SelfOrganizingMap.Neuron import Neuron
-from src.SelfOrganizingMap.SelfOrganizingMap import SelfOrganizingMap
+from src.SelfOrganizingMap import SelfOrganizingMap, Neuron
+import numpy as np
 
 
 class NeighborhoodFunction(ABC):
     @abstractmethod
-    def apply(self, self_organizing_map: SelfOrganizingMap, winner_neuron: Neuron, learning_rate: float):
+    def apply(self, som: SelfOrganizingMap, winner_neuron: Neuron, learning_rate: float, learning_point: np.array):
         pass
