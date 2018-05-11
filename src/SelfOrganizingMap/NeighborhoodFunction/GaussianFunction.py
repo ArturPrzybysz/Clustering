@@ -1,5 +1,5 @@
 from src.SelfOrganizingMap.NeighborhoodFunction.NeighborhoodFunction import NeighborhoodFunction
-from src.SelfOrganizingMap.Neuron import Neuron
+from SelfOrganizingMap.Neuron import Neuron
 from src.SelfOrganizingMap.SelfOrganizingMap import SelfOrganizingMap
 from src.util.MathUtil import euclidean_distance
 from src.util.MathUtil import gaussian_function
@@ -14,7 +14,6 @@ class GaussianFunction(NeighborhoodFunction):
 
     def apply(self, som: SelfOrganizingMap, winner_neuron: Neuron, learning_rate: float, learning_point: np.array):
         radius = int(self.radius)
-        print(radius)
         for x in range(0, som.matrix_height):
             for y in range(0, som.matrix_width):
                 if (x - winner_neuron.x) ** 2 + (y - winner_neuron.y) ** 2 < radius ** 2:

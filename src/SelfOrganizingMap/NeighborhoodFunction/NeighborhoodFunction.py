@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from src.SelfOrganizingMap import SelfOrganizingMap, Neuron
+from src.SelfOrganizingMap import SelfOrganizingMap
+from SelfOrganizingMap import Neuron
 import numpy as np
 
 

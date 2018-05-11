@@ -19,8 +19,8 @@ def print_neurons_connections_over_data_points(som, data, width: int, height: in
     im = Image.new('RGBA', (width, height), (255, 255, 255, 0))
     draw = ImageDraw.Draw(im)
 
-    # dot_size = 2
-    # _draw_points(data, draw, dot_size)
+    dot_size = 2
+    _draw_points(data, draw, dot_size)
 
     connections = _prepare_connections(som)
     _draw_connections(connections, draw)

@@ -11,7 +11,7 @@ class SelfOrganizingMap:
     def __init__(self, matrix_height: int, matrix_width: int, input_length: int,
                  neighborhood_function: NeighborhoodFunction, learning_rate: float,
                  minimum_tiredness_potential: float):
-        self.neurons = self.init_neurons(matrix_height, matrix_width, input_length)
+        self.neurons = self._init_neurons(matrix_height, matrix_width, input_length)
         self.matrix_height = matrix_height
         self.matrix_width = matrix_width
         self.neighborhood_function = neighborhood_function
@@ -21,7 +21,7 @@ class SelfOrganizingMap:
         self._update_active_neurons()
 
     @staticmethod
-    def init_neurons(matrix_height: int, matrix_width: int, dimension: int):
+    def _init_neurons(matrix_height: int, matrix_width: int, dimension: int):
         return [[Neuron(dimension, x, y) for x in range(0, matrix_width)] for y in range(0, matrix_height)]
 
     def _update_neurons_tiredness(self, winner: Neuron):
@@ -55,7 +55,7 @@ class SelfOrganizingMap:
             np.random.shuffle(data)
             learning_speed = self.learning_rate / (1 + e / epochs)
             for d in data:
-                if counter % 300 == 0:
+                if counter % 35 == 0:
                     save_neurons_connections_over_data_points(self, data, str(counter))
                 counter += 1
 
