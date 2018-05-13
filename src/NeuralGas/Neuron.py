@@ -9,3 +9,6 @@ class Neuron:
 
     def update_distance(self, vector):
         self.distance = util.euclidean_distance(self.weights, vector)
+
+    def update_weights(self, update_vector):
+        self.weights += update_vector

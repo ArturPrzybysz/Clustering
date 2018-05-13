@@ -52,10 +52,11 @@ class SelfOrganizingMap:
     def learn(self, data, epochs: int):
         counter = 0
         for e in range(0, epochs):
+            print('Epoch = ', e)
             np.random.shuffle(data)
             learning_speed = self.learning_rate / (1 + e / epochs)
             for d in data:
-                if counter % 35 == 0:
+                if counter % 100 == 0:
                     save_neurons_connections_over_data_points(self, data, str(counter))
                 counter += 1
 

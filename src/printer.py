@@ -1,5 +1,53 @@
 from PIL import Image, ImageDraw
 import os
+import random
+
+from NeuralGas import Neuron
+
+
+def save_clusters_and_centroids(clusters, centroids, width, height, filename):
+    im = Image.new('RGB', (width, height), (255, 255, 255))
+    draw = ImageDraw.Draw(im)
+
+    colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (125, 0, 125)]
+    if len(centroids) > len(colors):
+        for i in range(len(centroids), len(colors)):
+            colors.append(_random_color())
+
+    for i in range(0, len(clusters)):
+        _draw_points(clusters[i], draw, dot_size=2, color=colors[i])
+
+    _draw_points(centroids, draw, dot_size=10, color=(0, 0, 0))
+    path = os.path.dirname(os.path.abspath(__file__)) + "\\img\\" + filename
+    im.save(path + ".png")
+
+
+def save_neurons_over_data_points(neurons: [Neuron], data, height, width, filename):
+    im = Image.new('RGBA', (width, height), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(im)
+    _draw_points(data, draw, dot_size=2)
+    _draw_neurons(neurons, draw, dot_size=7)
+
+    path = os.path.dirname(os.path.abspath(__file__)) + "\\img\\" + filename
+    im.save(path + ".png")
+
+
+def print_neurons_over_data_points(neurons: [Neuron], data, height, width):
+    im = Image.new('RGBA', (width, height), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(im)
+    _draw_points(data, draw, dot_size=2)
+    _draw_neurons(neurons, draw, dot_size=10)
+
+    im.show()
+
+
+def _random_color():
+    return [random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)]
+
+
+def _draw_neurons(neurons: [Neuron], draw, dot_size):
+    for n in neurons:
+        _draw_point(n.weights[0] * 700 + 100, n.weights[1] * 700 + 100, dot_size, draw, color=(255, 0, 0))
 
 
 def save_neurons_connections_over_data_points(som, data, filename):
@@ -16,7 +64,7 @@ def save_neurons_connections_over_data_points(som, data, filename):
 
 
 def print_neurons_connections_over_data_points(som, data, width: int, height: int):
-    im = Image.new('RGBA', (width, height), (255, 255, 255, 0))
+    im = Image.new('RGB', (width, height), (255, 255, 255))
     draw = ImageDraw.Draw(im)
 
     dot_size = 2
@@ -48,18 +96,14 @@ def _prepare_connections(som):
     return connections
 
 
-def _draw_points(data, draw, dot_size):
+def _draw_points(data, draw, dot_size, color=(0, 0, 0)):
     for d in data:
-        _draw_point(d[0] * 700 + 100, d[1] * 700 + 100, dot_size, draw)
+        _draw_point(d[0] * 700 + 100, d[1] * 700 + 100, dot_size, draw, color)
 
 
-def _draw_point(x, y, size, draw):
+def _draw_point(x, y, size, draw, color):
     x1 = int(x - size / 2)
     y1 = int(y - size / 2)
     x2 = x1 + size
     y2 = y1 + size
-    draw.ellipse(xy=([(x1, y1), (x2, y2)]), fill=(0, 0, 0))
-
-
-def _save_photo(draw, name):
-    pass
+    draw.ellipse(xy=([(x1, y1), (x2, y2)]), fill=color)
