@@ -7,14 +7,13 @@ from util import MathUtil
 def k_means(data, cluster_count, epochs, dimensions):
     centroids = data[np.random.choice(np.arange(len(data)), cluster_count), :]
     clusters = _assign_data_to_clusters(data, centroids)
+    printer.save_clusters_and_centroids(clusters, centroids, width=900, height=900, filename=str(0))
 
     for e in range(0, epochs):
-        printer.save_clusters_and_centroids(clusters, centroids, width=900, height=900, filename=str(e))
         print('Epoch: ', e)
         clusters = _assign_data_to_clusters(data, centroids)
         centroids = _update_centroids(clusters, centroids)
-
-    printer.save_clusters_and_centroids(clusters, centroids, width=900, height=900, filename=str(epochs))
+        printer.save_clusters_and_centroids(clusters, centroids, width=900, height=900, filename=str(e + 1))
 
     return clusters
 
