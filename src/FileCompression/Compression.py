@@ -4,7 +4,6 @@ from SelfOrganizingMap import SelfOrganizingMap
 from PIL import Image
 import numpy as np
 import jsonpickle
-import scipy.misc
 from config import ROOT_DIR
 from scipy.misc import imsave
 
@@ -69,8 +68,8 @@ def decompress_image(encoded_file_name, decoded_file_name: str):
 
 
 def unpack(image_map, dictionary, image_dimensions):
-    width = image_dimensions[0]
-    height = image_dimensions[1]
+    width = image_dimensions[1]
+    height = image_dimensions[0]
 
     substitution_matrix = []
 
@@ -78,8 +77,7 @@ def unpack(image_map, dictionary, image_dimensions):
         substitution_matrix.append(dictionary[i])
 
     substitution_matrix = np.array(substitution_matrix)
-    print(width, height)
-    rgb_matrix = np.zeros(width * height * 3).reshape(width, height, 3)  # OK!!!
+    rgb_matrix = np.zeros(width * height * 3).reshape(height, width, 3)
 
     for i in range(len(substitution_matrix)):
         for j in range(len(substitution_matrix[0])):
@@ -93,9 +91,7 @@ def unpack(image_map, dictionary, image_dimensions):
 
             z = j % 3
 
-            # print(x, y, z)
-
-            rgb_matrix[y][x][z] = substitution_matrix[i][j]
+            rgb_matrix[x][y][z] = substitution_matrix[i][j]
     return rgb_matrix
 
 
@@ -122,7 +118,6 @@ def image_to_vectors(image_file_name: str):
 
 def split_matrix_to_vectors(matrix: np.array):
     vectors = []
-    print(len(matrix), len(matrix[0]))
     for i in np.arange(0, len(matrix), 2):
         for j in np.arange(0, len(matrix[0]), 2):
             vec = [[matrix[i][j],
