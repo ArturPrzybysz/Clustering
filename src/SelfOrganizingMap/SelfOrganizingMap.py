@@ -19,6 +19,7 @@ class SelfOrganizingMap:
         self.minimum_tiredness_potential = minimum_tiredness_potential
 
         self._update_active_neurons()
+        self.quantization_errors = []
 
     def react_to_input(self, vector: np.array):
         if len(self.active_neurons) != self.matrix_width * self.matrix_height:
@@ -36,6 +37,17 @@ class SelfOrganizingMap:
     @staticmethod
     def _init_neurons(matrix_height: int, matrix_width: int, dimension: int):
         return [[Neuron(dimension, x, y) for x in range(0, matrix_width)] for y in range(0, matrix_height)]
+
+    def _calculate_quantization_error(self, data):
+        self._reset_neurons_tiredness()
+        data_sample = data[np.random.choice(np.arange(len(data)), int(len(data) / 10)), :]
+
+        summed_distance = 0
+        for d in data_sample:
+            closest_neuron = SelfOrganizingMap.find_closest_active_neuron(self, d)
+            summed_distance += euclidean_distance(d, closest_neuron.weights) ** 2
+
+        return summed_distance / len(data_sample)
 
     def _reset_neurons_tiredness(self):
         active_neurons = []
@@ -75,6 +87,7 @@ class SelfOrganizingMap:
         counter = 0
         for e in range(0, epochs):
             print('Epoch = ', e)
+            self.quantization_errors.append(self._calculate_quantization_error(data))
             np.random.shuffle(data)
             learning_speed = self.learning_rate / (1 + e / epochs)
             for d in data:
@@ -86,6 +99,7 @@ class SelfOrganizingMap:
                 self.neighborhood_function.apply(self, closest_neuron, learning_speed, d)
                 self._update_neurons_tiredness(closest_neuron)
                 self._update_active_neurons()
+        self.quantization_errors.append(self._calculate_quantization_error(data))
 
     @staticmethod
     def find_closest_active_neuron(self, data):
