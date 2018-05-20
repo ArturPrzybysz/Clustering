@@ -1,6 +1,6 @@
 import printer
 import data_import
-
+import numpy as np
 from NeuralGas.NeuralGas import NeuralGas
 
 neural_gas = NeuralGas(neuron_count=40,
@@ -10,8 +10,12 @@ neural_gas = NeuralGas(neuron_count=40,
                        initial_neighborhood_coef=5,
                        final_neighborhood_coef=0.1)
 
-data = data_import.generate_heart()
-data = data_import.scale_data_set_to_range(data, 0, 0.1)
+dataA = data_import.scale_data_set_to_range(data_import.generate_heart(), 0.2, 0.4)
+dataB = data_import.scale_data_set_to_range(data_import.generate_heart(), 0.4, 0.5)
+dataC = data_import.scale_data_set_to_range(data_import.generate_heart(), 0.6, 0.75)
+dataD = data_import.scale_data_set_to_range(data_import.generate_heart(), 0.8, 1)
+
+data = np.concatenate((dataA, dataB, dataC, dataD))
 
 neural_gas.learn(data, epochs=10)
 
