@@ -61,6 +61,7 @@ def decompress_image(encoded_file_name, decoded_file_name: str):
 
     image_dimensions = data[0]
     dictionary = data[1]
+    print('Dictionary size:', len(dictionary))
     image_map = data[2]
 
     M = unpack(image_map, dictionary, image_dimensions)

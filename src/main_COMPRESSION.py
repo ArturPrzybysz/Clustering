@@ -10,8 +10,8 @@ network = som.SelfOrganizingMap(matrix_height=8,
                                 learning_rate=0.7,
                                 minimum_tiredness_potential=0.75)
 
-network = compression.prepare_SOM("rudy.bmp", network, epochs=4)
-compression.compress_image(image_file_name="rudy.bmp",
+network = compression.prepare_SOM("obama.bmp", network, epochs=2)
+compression.compress_image(image_file_name="obama.bmp",
                            som=network,
                            target_file_name="TEST123.art")
-compression.decompress_image("TEST123.art", "rudy.bmp")
+compression.decompress_image("TEST123.art", "obama.bmp")
